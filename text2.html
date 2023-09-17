@@ -1,0 +1,318 @@
+<!-- 第一次作业第二题 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>homework_1_2</title>
+    <style>
+      table {
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form method="post" action="#" enctype="multipart/form-data">
+      <table>
+        <!-- 表头 -->
+        <tr>
+          <td>
+            <h3 style="color: blue;">欢迎注册会员</h3>
+          </td>
+        </tr>
+        <!-- 手机号码 -->
+        <tr>
+          <td style="text-align: right">手机号码:</td>
+          <td>
+            <input type="text" name="phonenum" placeholder="11位手机号" />
+            <span style="color: red">必填</span>
+          </td>
+        </tr>
+        <!-- 创建密码 -->
+        <tr>
+          <td style="text-align: right">创建密码:</td>
+          <td>
+            <input type="text" name="password" placeholder="8位密码" />
+            <span style="color: red">必填</span>
+          </td>
+        </tr>
+        <!-- 注册邮箱 -->
+        <tr>
+          <td style="text-align: right">注册邮箱:</td>
+          <td>
+            <input
+              type="text"
+              name="email"
+              placeholder="例如:wustzz@sina.com"
+            />
+            <span style="color: red">必填</span>
+          </td>
+        </tr>
+        <!-- 验证码 -->
+        <tr>
+          <td style="text-align: right;">验证码：</td>
+          <td>
+            <input type="text" style="height: px" />
+            <canvas
+              id="canvas"
+              width="60"
+              height="20"
+              onclick="cli()"
+              style="border: 1px solid #ccc; border-radius: 5px"
+            ></canvas>
+          </td>
+        </tr>
+        <!-- 性别 -->
+        <tr>
+          <td style="text-align: right">性别:</td>
+          <td>
+            <label>
+              <input type="radio" name="sex" value="male" />
+              男
+            </label>
+            <label>
+              <input type="radio" name="sex" value="female" />
+              女
+            </label>
+          </td>
+        </tr>
+        <!-- 生日 -->
+        <tr>
+          <td style="text-align: right">生日:</td>
+          <td>
+            <input type="date" name="birth" />
+          </td>
+        </tr>
+
+        <tr>
+          <td style="text-align: right">年龄:</td>
+          <td>
+            <input type="number" name="age" />
+          </td>
+        </tr>
+        <!-- 籍贯 -->
+        <tr>
+          <td style="text-align: right">籍贯:</td>
+          <td>
+            <select name="state">
+              <option value="0">湖北省</option>
+              <option value="1">湖南省</option>
+              <option value="2">山东省</option>
+            </select>
+            <select name="city">
+              <option value="0">武汉市</option>
+              <option value="1">十堰市</option>
+              <option value="2">黄冈市</option>
+              <option value="3">长沙市</option>
+              <option value="4">烟台市</option>
+            </select>
+          </td>
+        </tr>
+        <!-- 个人学历 -->
+        <tr>
+          <td style="text-align: right">个人学历:</td>
+          <td>
+            <select name="study">
+              <option value="0">本科及以下</option>
+              <option value="1">本科</option>
+              <option value="2">硕士</option>
+              <option value="3">博士</option>
+            </select>
+          </td>
+        </tr>
+        <!-- 月薪 -->
+        <tr>
+          <td style="text-align: right;">月薪：</th>
+          <td>
+            <input
+              type="range"
+              id="salary"
+              name="salary"
+              min="0.0"
+              max="10000.0"
+              stap="1.0"
+              value="5000.0"
+            />
+            <span id="msg"></span>
+          </td>
+        </tr>
+        <!-- 个人爱好 -->
+        <tr>
+          <td style="text-align: right">个人爱好:</td>
+          <td>
+            <label>
+              <input type="checkbox" name="like" value="singing" />
+              唱歌
+            </label>
+            <label>
+              <input type="checkbox" name="like" value="running" />
+              跑步
+            </label>
+            <label>
+              <input type="checkbox" name="like" value="swimming" />
+              游泳
+            </label>
+          </td>
+        </tr>
+        <!-- 个人照片 -->
+        <tr>
+          <td style="text-align: right">个人照片:</td>
+          <td>
+            <div
+              id="test-image-preview"
+              style="
+                border: 1px solid silver;
+                width: 200px;
+                height: 200px;
+                background-repeat: no-repeat;
+                background-position: center;
+              "
+            ></div>
+            <input type="file" id="test-image-file" name="test" />
+            <p id="test-file-info">没有选择文件</p>
+          </td>
+        </tr>
+        <!-- 个人简历 -->
+        <tr>
+          <td style="text-align: right">个人简介:</td>
+          <td>
+            <textarea name="intro" cols="50" rows="10"></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="text-align: right"></td>
+          <td>
+            <input type="submit" value="提交" />
+            <input type="reset" value="重填" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </body>
+
+  <!-- 显示滑块的值 -->
+  <script>
+    var msg = document.getElementById("msg"); // 根据id值找到span元素
+    window.onload = function () {
+      msg.innerHTML = document.getElementById("salary").value; // 获取区间域初始value值
+    };
+    document.getElementById("salary").onchange = function () {
+      msg.innerHTML = this.value; // 将当前区间域的value作为span元素的内容
+    };
+  </script>
+
+  <!-- 点击刷新验证码 -->
+  <script>
+    var show_num = [];
+    draw(show_num);
+
+    function cli() {
+      draw(show_num);
+    }
+
+    function draw(show_num) {
+      var canvas_width = document.getElementById("canvas").clientWidth;
+      var canvas_height = document.getElementById("canvas").clientHeight;
+      var canvas = document.getElementById("canvas"); //获取到canvas的对象，演员
+      var context = canvas.getContext("2d"); //获取到canvas画图的环境，演员表演的舞台
+      canvas.width = canvas_width;
+      canvas.height = canvas_height;
+      var sCode =
+        "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+      var aCode = sCode.split(",");
+      var aLength = aCode.length; //获取到数组的长度
+
+      for (var i = 0; i <= 3; i++) {
+        var j = Math.floor(Math.random() * aLength); //获取到随机的索引值
+        var deg = (Math.random() * 30 * Math.PI) / 180; //产生0~30之间的随机弧度
+        var txt = aCode[j]; //得到随机的一个内容
+        show_num[i] = txt;
+        var x = 5 + i * 10; //文字在canvas上的x坐标
+        var y = 10 + Math.random() * 4; //文字在canvas上的y坐标
+        context.font = "bold 16px 微软雅黑";
+
+        context.translate(x, y);
+        context.rotate(deg);
+
+        context.fillStyle = randomColor();
+        context.fillText(txt, 0, 0);
+        context.rotate(-deg);
+        context.translate(-x, -y);
+      }
+      for (var i = 0; i <= 5; i++) {
+        //验证码上显示线条
+        context.strokeStyle = randomColor();
+        context.beginPath();
+        context.moveTo(
+          Math.random() * canvas_width,
+          Math.random() * canvas_height
+        );
+        context.lineTo(
+          Math.random() * canvas_width,
+          Math.random() * canvas_height
+        );
+        context.stroke();
+      }
+      for (var i = 0; i <= 30; i++) {
+        //验证码上显示小点
+        context.strokeStyle = randomColor();
+        context.beginPath();
+        var x = Math.random() * canvas_width;
+        var y = Math.random() * canvas_height;
+        context.moveTo(x, y);
+        context.lineTo(x + 1, y + 1);
+        context.stroke();
+      }
+    }
+
+    function randomColor() {
+      //得到随机的颜色值
+      var r = Math.floor(Math.random() * 256);
+      var g = Math.floor(Math.random() * 256);
+      var b = Math.floor(Math.random() * 256);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+  </script>
+
+  <!-- 读取并显示图片 -->
+  <script>
+    var fileInput = document.getElementById("test-image-file");
+    var info = document.getElementById("test-file-info");
+    var preview = document.getElementById("test-image-preview");
+    fileInput.addEventListener("change", function () {
+      // 监听change事件
+      preview.style.backgroundImage = ""; // 清除背景图片
+      if (!fileInput.value) {
+        info.innerHTML = "没有选择文件";
+        return;
+      }
+      var file = fileInput.files[0]; // 获取File引用
+      // 获取File信息:
+      info.innerHTML =
+        "文件: " +
+        file.name +
+        "<br>" +
+        "大小: " +
+        file.size +
+        "<br>" +
+        "修改: " +
+        file.lastModifiedDate;
+      if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/gif"
+      ) {
+        alert("不是有效的图片文件!");
+        return;
+      }
+      var reader = new FileReader(); // 读取文件
+      reader.onload = function (e) {
+        // 发起一个异步操作来读取文件内容
+        var data = e.target.result;
+        preview.style.backgroundImage = "url(" + data + ")";
+      };
+      reader.readAsDataURL(file); // 以DataURL的形式读取文件
+    });
+  </script>
+</html>
